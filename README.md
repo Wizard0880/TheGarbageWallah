@@ -49,6 +49,8 @@ GarbageWallah is a React application built with Vite that aims to streamline the
 - **React Icons**: A collection of popular icons.
 
 ## Project Structure
+
+```plaintext
 GarbageWallah/
 ├── public/
 ├── src/
@@ -70,3 +72,4 @@ GarbageWallah/
 ├── tailwind.config.js
 ├── vite.config.js
 ├── readme.md
+
