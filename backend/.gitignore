@@ -1,0 +1,29 @@
+# Node.js dependencies
+node_modules/
+
+# Backend environment variables
+.env
+
+# Logs
+logs
+*.log
+*.log.*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files (e.g., VSCode)
+.vscode/
+.idea/
+
+# npm package-lock file
+package-lock.json
+
+# Temporary files
+*.swp
+*.bak
+*.tmp
+
+# Coverage folder (for test coverage results)
+coverage/
