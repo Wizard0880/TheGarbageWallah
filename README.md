@@ -1,4 +1,4 @@
-# 🚮 The Garbage Wallah  
+# 🚮 The GarbageWallah  
 **A Waste Management System with Role-Based Access Control**  
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)  
 
