@@ -1,5 +1,3 @@
-Here’s a polished **README.md** for "The Garbage Wallah" with a structured description, technical breakdown, and testing examples:
-
 ---
 
 # 🚮 The Garbage Wallah  
