@@ -1,216 +1,186 @@
-# 🚮 The Garbage Wallah  
-
-A comprehensive waste management system with **Role-Based Access Control (RBAC)** for residents, kabadiwalas (waste collectors), and administrators.  
-Built with **Node.js**, **Express**, **MongoDB**, and secure JWT authentication.  
+Here’s a polished **README.md** for "The Garbage Wallah" with a structured description, technical breakdown, and testing examples:
 
 ---
 
-## 🌟 Features  
+# 🚮 The Garbage Wallah  
+**A Waste Management System with Role-Based Access Control**  
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)  
 
-### 👤 **Resident Features**  
-- **Secure Registration/Login**: Password hashing with `bcryptjs` and JWT tokens.  
-- **Appointment Management**: Book, track, and manage garbage pickup requests.  
-- **Notifications**: Real-time updates via in-app alerts.  
-- **Feedback System**: Rate services and submit feedback.  
+A scalable platform connecting **residents**, **kabadiwalas** (waste collectors), and **administrators** to streamline garbage collection. Built for efficient waste disposal, real-time tracking, and secure role-based operations.  
 
-### 🧑🔧 **Kabadiwala Features**  
-- **Service Area Registration**: Register with operational pincode.  
-- **Availability Toggle**: Mark self as active/inactive for pickups.  
-- **Request Management**: View, accept, or reject pickup requests in their area.  
-- **Work History**: Track completed pickups.  
+🔗 **Demo**: [Coming Soon]
+---
 
-### 👑 **Admin Features**  
-- **Audit Logs**: Monitor system activities and user actions.  
-- **Appointment Oversight**: View all pickups (daily/weekly basis).  
-- **Kabadiwala Management**: Filter by pincode/availability status.  
-- **Feedback Analysis**: Access user ratings and comments.  
+## 🌐 Overview  
+**The Garbage Wallah** modernizes waste management by:  
+- Allowing residents to schedule pickups and track requests.  
+- Enabling kabadiwalas to manage service areas and accept/reject pickups.  
+- Providing admins with tools to monitor system health and user activity.  
+- Ensuring security through JWT authentication and granular RBAC.  
+
+---
+
+## 🧩 Features  
+
+| Role         | Capabilities                                                                 |
+|--------------|------------------------------------------------------------------------------|
+| **Resident** | Book pickups, track status, submit feedback, receive notifications          |
+| **Kabadiwala**| Manage availability, view area-specific requests, accept/reject pickups    |
+| **Admin**    | Audit logs, manage users/appointments, analyze feedback, system monitoring  |
 
 ---
 
 ## 🛠 Tech Stack  
-- **Backend**: Node.js, Express  
-- **Database**: MongoDB + Mongoose ODM  
-- **Authentication**: JWT (Access + Refresh Tokens)  
-- **Security**: RBAC, HTTP-only cookies, bcryptjs  
-- **Logging**: Activity tracking with timestamps  
+**Backend**:  
+![Node.js](https://img.shields.io/badge/Node.js-18.x-green)  
+![Express](https://img.shields.io/badge/Express-4.x-lightgrey)  
+**Database**:  
+![MongoDB](https://img.shields.io/badge/MongoDB-7.x-%2347A248)  
+![Mongoose](https://img.shields.io/badge/Mongoose-8.x-%2347A248)  
+**Security**:  
+![JWT](https://img.shields.io/badge/JWT-Auth-%23000000)  
+![Bcrypt](https://img.shields.io/badge/Bcrypt-5.x-%2342B983)  
 
 ---
 
-## 🚀 Quick Start  
+## 🚀 Getting Started  
 
 ### Prerequisites  
 - Node.js v18+  
-- MongoDB (local/Atlas)  
-- Postman/Insomnia  
+- MongoDB Atlas/local instance  
+- Postman/Insomnia for API testing  
 
-### Setup  
-1. Clone the repo:  
-   ```bash  
-   git clone https://github.com/Wizard0880/TheGarbageWallah.git  
-   cd TheGarbageWallah  
-   ```  
-2. Install dependencies:  
-   ```bash  
-   npm install  
-   ```  
-3. Configure environment (create `.env`):  
-   ```env  
-   PORT=3000  
-   MONGO_URI=mongodb://localhost:27017/garbage_wallah  
-   JWT_SECRET=your_secure_key_here  
-   JWT_ACCESS_EXPIRY=15m  
-   JWT_REFRESH_EXPIRY=7d
-   NODE_ENV=development
-   ```  
-4. Start the server:  
-   ```bash  
-   npm start  
-   ```  
+### Installation  
+```bash
+git clone https://github.com/Wizard0880/TheGarbageWallah.git
+cd TheGarbageWallah
+npm install
+```
+
+### Configuration  
+Create `.env` file:  
+```env
+PORT=3000
+MONGO_URI=mongodb://localhost:27017/garbage_wallah
+JWT_SECRET=your_secure_key_here
+JWT_ACCESS_EXPIRY=15m
+JWT_REFRESH_EXPIRY=7d
+```
+
+### Start Server  
+```bash
+npm start
+```
 
 ---
 
-## 📂 Project Structure  
+## 📚 API Documentation  
 
-### Routes  
-| Role         | Endpoints                               | Description                     |  
-|--------------|-----------------------------------------|---------------------------------|  
-| **Resident** | `/api/resident/*`                       | User registration, appointments |  
-| **Kabadiwala**| `/api/kabadiwala/*`                    | Request management, status updates |  
-| **Admin**    | `/api/admin/*`                          | System monitoring & management |  
+### 👤 Resident Endpoints  
+
+#### Book a Pickup (HTTP)  
+```http
+POST /api/resident/request-pickup
+Authorization: Bearer <ACCESS_TOKEN>
+Content-Type: application/json
+
+{
+  "scrapType": "Plastic",
+  "pickupDate": "2024-07-25T10:00:00Z",
+  "address": "22 Green Valley, Mumbai"
+}
+```
+
+**Response**:  
+```json
+{
+  "success": true,
+  "appointment": {
+    "id": "667a1b2c3d4e",
+    "status": "Pending",
+    "assignedKabadiwala": null
+  }
+}
+```
 
 ---
 
-## 🔐 Security Implementation  
+### 🧑🔧 Kabadiwala Endpoints  
 
-### Role-Based Access Control (RBAC)  
-```javascript 
-// Middleware example
-const authorize = (roles) => (req, res, next) => {
-  if (!roles.includes(req.user.role)) {
-    return res.status(403).json({ message: "Forbidden: Insufficient permissions" });
+#### Accept Pickup Request (cURL)  
+```bash
+curl -X POST "http://localhost:3000/api/kabadiwala/requests/action" \
+-H "Authorization: Bearer <KABADI_TOKEN>" \
+-H "Content-Type: application/json" \
+-d '{"requestId": "667a1b2c3d4e", "action": "accept"}'
+```
+
+**Response**:  
+```json
+{
+  "success": true,
+  "message": "Request ID 667a1b2c3d4e accepted",
+  "updatedStatus": "Accepted"
+}
+```
+
+---
+
+### 👑 Admin Endpoints  
+
+#### View System Logs (HTTP)  
+```http
+GET /api/admin/logs
+Authorization: Bearer <ADMIN_TOKEN>
+```
+
+**Response**:  
+```json
+{
+  "logs": [
+    {
+      "action": "PICKUP_ACCEPTED",
+      "user": "665a1b2c3d4e",
+      "timestamp": "2024-07-20T09:30:00Z",
+      "details": "Kabadiwala Vijay accepted request"
+    }
+  ]
+}
+```
+
+---
+
+## 🛡 Security Architecture  
+
+### RBAC Workflow  
+```mermaid
+graph LR
+    A[User] -->|Login| B[JWT Generation]
+    B --> C{Validate Role}
+    C -->|Admin| D[Admin Dashboard]
+    C -->|Kabadiwala| E[Request Management]
+    C -->|Resident| F[Book Pickups]
+```
+
+### Middleware Snippet  
+```javascript
+// Role validation middleware
+const authorize = (allowedRoles) => (req, res, next) => {
+  if (!allowedRoles.includes(req.user.role)) {
+    return res.status(403).json({ 
+      code: "RBAC-403",
+      message: "Access forbidden for your role" 
+    });
   }
   next();
 };
 ```
 
-### Token Flow  
-1. **Login**:  
-   - User → Server: `email + password`  
-   - Server → User: `accessToken` (15m expiry) + `refreshToken` (7d expiry)  
-2. **API Requests**:  
-   - Header: `Authorization: Bearer <accessToken>`  
-3. **Token Refresh**:  
-   - Use `refreshToken` to generate new `accessToken`  
-
----
-
-## 📋 API Examples  
-
-### 1. Resident: Book Pickup  
-```http
-POST /api/resident/request-pickup  
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...  
-Content-Type: application/json  
-
-{  
-  "scrapType": "Plastic",  
-  "pickupDate": "2024-07-25T10:00:00Z",  
-  "address": "22 Green Valley, Mumbai"  
-}  
-```
-
-**Response**:  
-```json  
-{  
-  "success": true,  
-  "appointmentId": "667a1b2c3d4e5f6a7b8c9d0",  
-  "message": "Pickup scheduled for 25 July"  
-}  
-```  
-
-### 2. Kabadiwala: Accept Request  
-```http
-POST /api/kabadiwala/requests/action  
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...  
-Content-Type: application/json  
-
-{  
-  "requestId": "667a1b2c3d4e5f6a7b8c9d0",  
-  "action": "accept"  
-}  
-```
-
-**Response**:  
-```json  
-{  
-  "success": true,  
-  "message": "Request accepted. Assigned to Kabadiwala ID: 665a1b2c3d4e"  
-}  
-```  
-
-### 3. Admin: View Logs  
-```http
-GET /api/admin/logs  
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...  
-```
-
-**Response**:  
-```json  
-{  
-  "success": true,  
-  "logs": [  
-    {  
-      "action": "PICKUP_ACCEPTED",  
-      "user": "665a1b2c3d4e",  
-      "timestamp": "2024-07-20T09:30:00Z",  
-      "details": "Request ID: 667a1b2c3d4e accepted"  
-    }  
-  ]  
-}  
-```  
-
----
-
-## 🗄 Database Schema  
-
-### Key Models  
-| Model         | Fields                                  |  
-|---------------|-----------------------------------------|  
-| **User**      | `email`, `passwordHash`, `role`, `pincode` |  
-| **Appointment**| `userId`, `scrapType`, `status`, `pickupDate` |  
-| **Kabadiwala**| `userId`, `activeStatus`, `assignedRequests` |  
-| **Log**       | `action`, `user`, `timestamp`, `details` |  
-
----
-
-## 🚨 Error Handling  
-
-### Common Scenarios  
-1. **Invalid Token**:  
-   ```json  
-   {  
-     "success": false,  
-     "error": {  
-       "code": "AUTH-401",  
-       "message": "Invalid/expired token"  
-     }  
-   }  
-   ```  
-
-2. **Role Violation** (Kabadiwala accessing admin route):  
-   ```json  
-   {  
-     "success": false,  
-     "error": {  
-       "code": "RBAC-403",  
-       "message": "Admin access required"  
-     }  
-   }  
-   ```  
-
 ---
 
 ## 📜 License  
-MIT License © 2024 The Garbage Wallah Team  
+MIT License © 2024 TheGarbageWallah Team  
 
---- 
+---
+
+For contributions or issues, visit the [GitHub repository](https://github.com/Wizard0880/TheGarbageWallah).
